@@ -4,21 +4,21 @@ class PinsController < ApplicationController
   before_action :authenticate_user!, except: [:index]
 
   def index
-     @pins = Pin.all.order("created_at DESC").paginate(:page => params[:page], :per_page => 3)
+     @pins = Pin.all.order("created_at DESC").paginate(:page => params[:page], :per_page => 50)
   end
 
   def show
   end
 
   def new
-    @pin = Pin.new
+    @pin = current_user.pins.build
   end
 
   def edit
   end
 
   def create
-    @pin = Pin.new
+    @pin =  current_user.pins.build(pin_params)
     if @pin.save
       redirect_to @pin, notice: 'Pin was successfully created.'
     else
